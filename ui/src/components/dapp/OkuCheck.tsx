@@ -64,7 +64,7 @@ const OkuCheck = () => {
         return;
       }
     });
-  }, [chainId, account, ageCheckContract]);
+  }, [chainId, account, okuCheckContract]);
 
   const getOkuVerificationStatus = useCallback(async () => {
     if (account == null || okuCheckContract == null || chainId == null) {

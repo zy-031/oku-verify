@@ -44,7 +44,7 @@ describe("OkuCheck", () => {
       proof.pi_c[1]
     ]
 
-    const transaction = okuCheckContract.connect(accounts[0]).verifyoku(solidityProof, publicSignals)
+    const transaction = okuCheckContract.connect(accounts[0]).verifyOku(solidityProof, publicSignals)
     console.log("transaction", transaction)
     //    await expect(transaction).to.be.revertedWith("Below oku limit")
 
