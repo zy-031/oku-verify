@@ -15,7 +15,7 @@ import BaseAlert from '@components/common/BaseAlert';
 import BaseButton from '@components/common/BaseButton';
 import { textFieldStyle } from '@components/common/BaseTextField';
 import { getAgeCheckContract } from '@hooks/contractHelpers';
-import { generateBroadcastParams } from '@utils/ zk/zk-witness';
+import { generateBroadcastParams } from '@utils/zk/zk-witness';
 import { truncateAddress } from '@utils/wallet';
 
 import { useWalletContext } from './WalletContext';
