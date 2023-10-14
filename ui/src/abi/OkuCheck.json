@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "AgeCheck",
-  "sourceName": "contracts/AgeCheck.sol",
+  "contractName": "OkuCheck",
+  "sourceName": "contracts/OkuCheck.sol",
   "abi": [
     {
       "inputs": [
@@ -30,7 +30,7 @@
           "type": "bool"
         }
       ],
-      "name": "AgeVerfied",
+      "name": "OkuVerfied",
       "type": "event"
     },
     {
@@ -78,7 +78,7 @@
           "type": "uint256[2]"
         }
       ],
-      "name": "verifyAge",
+      "name": "verifyOku",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -3,24 +3,23 @@ pragma circom 2.0.0;
 
 include "../node_modules/circomlib/circuits/comparators.circom";
 
-template AgeLimit() {
+template OkuLimit() {
     // private
-    signal input age; 
-    
+    signal input oku; 
+
     // public
-    signal input ageLimit;
+    signal input okuLimit;
 
 
     // true/false
     signal output out;
 
-    // considering max age 127
     component greaterThan = GreaterThan(8); 
-    greaterThan.in[0] <== age;
-    greaterThan.in[1] <== ageLimit;
+    greaterThan.in[0] <== oku;
+    greaterThan.in[1] <== okuLimit;
 
     out <-- greaterThan.out;
     out === 1;
 }
 
-component main {public [ageLimit]} = AgeLimit();
+component main {public [okuLimit]} = OkuLimit();

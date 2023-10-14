@@ -14,7 +14,7 @@ import {
 import BaseAlert from '@components/common/BaseAlert';
 import BaseButton from '@components/common/BaseButton';
 import { textFieldStyle } from '@components/common/BaseTextField';
-import { getAgeCheckContract } from '@hooks/contractHelpers';
+import { getOkuCheckContract } from '@hooks/contractHelpers';
 import { generateBroadcastParams } from '@utils/zk/zk-witness';
 import { truncateAddress } from '@utils/wallet';
 
@@ -26,80 +26,80 @@ const Row = styled(Box)((_) => ({
   flex: 1,
 }));
 
-const AgeCheck = () => {
-  const [age, setAge] = React.useState<number>(19);
+const OkuCheck = () => {
+  const [oku, setOku] = React.useState<number>(19);
   const [error, setError] = React.useState<string | undefined>();
   const [alert, setAlert] = React.useState<{ open: boolean; message: string }>({
     open: false,
     message: '',
   });
-  const [ageVerified, setAgeVerified] = React.useState<boolean>(false);
+  const [okuVerified, setOkuVerified] = React.useState<boolean>(false);
   const { chainId, provider, account } = useWalletContext();
 
-  const ageCheckContract = React.useMemo(
-    () => getAgeCheckContract(chainId ?? 1666700000),
+  const okuCheckContract = React.useMemo(
+    () => getOkuCheckContract(chainId ?? 1666700000),
     [chainId],
   );
 
   useEffect(() => {
-    if (ageCheckContract == null || chainId == null || account == null) {
+    if (okuCheckContract == null || chainId == null || account == null) {
       return;
     }
 
-    ageCheckContract.on('AgeVerfied', (address, isVerified) => {
+    okuCheckContract.on('OkuVerfied', (address, isVerified) => {
       if (isVerified && address === account) {
         setAlert({
           open: true,
-          message: `Age Verified for ${truncateAddress(address)}`,
+          message: `Oku Verified for ${truncateAddress(address)}`,
         });
-        setAgeVerified(true);
+        setOkuVerified(true);
         return;
       }
       if (!isVerified && address === account) {
         setAlert({
           open: true,
-          message: `Age flag reset for ${truncateAddress(address)}`,
+          message: `Oku flag reset for ${truncateAddress(address)}`,
         });
-        setAgeVerified(false);
+        setOkuVerified(false);
         return;
       }
     });
   }, [chainId, account, ageCheckContract]);
 
-  const getAgeVerificationStatus = useCallback(async () => {
-    if (account == null || ageCheckContract == null || chainId == null) {
+  const getOkuVerificationStatus = useCallback(async () => {
+    if (account == null || okuCheckContract == null || chainId == null) {
       return;
     }
 
-    const isVerified = await ageCheckContract.getVerficationStatus(account);
+    const isVerified = await okuCheckContract.getVerficationStatus(account);
 
     if (isVerified) {
-      setAgeVerified(true);
+      setOkuVerified(true);
     }
-  }, [ageCheckContract, account, chainId]);
+  }, [okuCheckContract, account, chainId]);
 
   useEffect(() => {
-    getAgeVerificationStatus();
-  }, [account, getAgeVerificationStatus, chainId, ageCheckContract]);
+    getOkuVerificationStatus();
+  }, [account, getOkuVerificationStatus, chainId, okuCheckContract]);
 
   const handleVerify = async () => {
-    if (ageCheckContract == null) {
+    if (okuCheckContract == null) {
       return;
     }
 
     try {
       const [a, b, c, input] = await generateBroadcastParams({
         ...{
-          ageLimit: 18,
-          age,
+          okuLimit: 255,
+          oku,
         },
       });
       setError(undefined);
       const proof = [...a, ...b[0], ...b[1], ...c];
       try {
-        const tx = await ageCheckContract
+        const tx = await okuCheckContract
           .connect(provider.getSigner())
-          .verifyAge(proof, input);
+          .verifyOku(proof, input);
         if (tx?.hash) {
           setAlert({
             open: true,
@@ -113,16 +113,16 @@ const AgeCheck = () => {
         });
       }
     } catch (e) {
-      setError('Failed to generate proof, possibly age not valid.');
+      setError('Failed to generate proof, possibly document not valid.');
     }
   };
 
   const handleReset = async () => {
-    if (ageCheckContract == null) {
+    if (okuCheckContract == null) {
       return;
     }
     try {
-      const tx = await ageCheckContract
+      const tx = await okuCheckContract
         .connect(provider.getSigner())
         .setVerficationStatus(false);
 
@@ -139,14 +139,14 @@ const AgeCheck = () => {
       });
     }
   };
-  const AgeVerfiedText = React.memo(() => {
+  const OkuVerfiedText = React.memo(() => {
     if (account == null) {
       return null;
     }
     return (
       <Typography mb="8px">
-        Age for<b> {truncateAddress(account) ?? ''} </b>{' '}
-        {ageVerified ? 'is above 18.' : 'not verified.'}
+         Oku for<b> {truncateAddress(account) ?? ''} </b>{' '}
+        {okuVerified ? 'is verified' : 'not verified.'}
       </Typography>
     );
   });
@@ -188,7 +188,7 @@ const AgeCheck = () => {
         }}
       >
         <Typography mb="8px" variant="h2">
-          Age verification using Zero Knowledge Proofs.
+          Oku verification using Zero Knowledge Proofs.
         </Typography>
       </Box>
       <Box
@@ -212,7 +212,7 @@ const AgeCheck = () => {
           }}
         >
           <Box display="flex" flexDirection="column" justifyContent="center">
-            <AgeVerfiedText />
+            <OkuVerfiedText />
             <BaseButton variant="contained" onClick={handleReset}>
               Reset
             </BaseButton>
@@ -223,16 +223,16 @@ const AgeCheck = () => {
         <TextField
           id="outlined-basic"
           variant="outlined"
-          value={age}
+          value={oku}
           type="number"
-          onChange={(e) => setAge(Number(e.target.value ?? 0))}
+          onChange={(e) => setOku(Number(e.target.value ?? 0))}
           error={!!error}
           helperText={!!error && error}
           style={{ marginRight: '8px' }}
           inputProps={{ style: textFieldStyle }}
         />
         <BaseButton variant="contained" onClick={handleVerify}>
-          Verify Age
+          Verify Oku
         </BaseButton>
       </Row>
       {/* <HowItWorks /> */}
@@ -240,4 +240,4 @@ const AgeCheck = () => {
   );
 };
 
-export default AgeCheck;
+export default OkuCheck;

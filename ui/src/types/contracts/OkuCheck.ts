@@ -17,12 +17,12 @@ import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import { Listener, Provider } from '@ethersproject/providers';
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
-export interface AgeCheckInterface extends utils.Interface {
-  contractName: 'AgeCheck';
+export interface OkuCheckInterface extends utils.Interface {
+  contractName: 'OkuCheck';
   functions: {
     'getVerficationStatus(address)': FunctionFragment;
     'setVerficationStatus(bool)': FunctionFragment;
-    'verifyAge(uint256[8],uint256[2])': FunctionFragment;
+    'verifyOku(uint256[8],uint256[2])': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -34,7 +34,7 @@ export interface AgeCheckInterface extends utils.Interface {
     values: [boolean],
   ): string;
   encodeFunctionData(
-    functionFragment: 'verifyAge',
+    functionFragment: 'verifyOku',
     values: [BigNumberish[], [BigNumberish, BigNumberish]],
   ): string;
 
@@ -46,29 +46,29 @@ export interface AgeCheckInterface extends utils.Interface {
     functionFragment: 'setVerficationStatus',
     data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: 'verifyAge', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'verifyOku', data: BytesLike): Result;
 
   events: {
-    'AgeVerfied(address,bool)': EventFragment;
+    'OkuVerfied(address,bool)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: 'AgeVerfied'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'OkuVerfied'): EventFragment;
 }
 
-export type AgeVerfiedEvent = TypedEvent<
+export type OkuVerfiedEvent = TypedEvent<
   [string, boolean],
   { person: string; verfied: boolean }
 >;
 
-export type AgeVerfiedEventFilter = TypedEventFilter<AgeVerfiedEvent>;
+export type OkuVerfiedEventFilter = TypedEventFilter<OkuVerfiedEvent>;
 
-export interface AgeCheck extends BaseContract {
-  contractName: 'AgeCheck';
+export interface OkuCheck extends BaseContract {
+  contractName: 'OkuCheck';
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: AgeCheckInterface;
+  interface: OkuCheckInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -100,7 +100,7 @@ export interface AgeCheck extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    verifyAge(
+    verifyOku(
       _proof: BigNumberish[],
       _input: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
@@ -117,7 +117,7 @@ export interface AgeCheck extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  verifyAge(
+  verifyOku(
     _proof: BigNumberish[],
     _input: [BigNumberish, BigNumberish],
     overrides?: Overrides & { from?: string | Promise<string> },
@@ -134,7 +134,7 @@ export interface AgeCheck extends BaseContract {
       overrides?: CallOverrides,
     ): Promise<void>;
 
-    verifyAge(
+    verifyOku(
       _proof: BigNumberish[],
       _input: [BigNumberish, BigNumberish],
       overrides?: CallOverrides,
@@ -142,11 +142,11 @@ export interface AgeCheck extends BaseContract {
   };
 
   filters: {
-    'AgeVerfied(address,bool)'(
+    'OkuVerfied(address,bool)'(
       person?: null,
       verfied?: null,
-    ): AgeVerfiedEventFilter;
-    AgeVerfied(person?: null, verfied?: null): AgeVerfiedEventFilter;
+    ): OkuVerfiedEventFilter;
+    OkuVerfied(person?: null, verfied?: null): OkuVerfiedEventFilter;
   };
 
   estimateGas: {
@@ -160,7 +160,7 @@ export interface AgeCheck extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    verifyAge(
+    verifyOku(
       _proof: BigNumberish[],
       _input: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
@@ -178,7 +178,7 @@ export interface AgeCheck extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    verifyAge(
+    verifyOku(
       _proof: BigNumberish[],
       _input: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },

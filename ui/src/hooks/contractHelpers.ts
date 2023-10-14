@@ -2,9 +2,9 @@ import { networkConfig } from '@config/network';
 import { toHex } from '@utils/wallet';
 import { ethers } from 'ethers';
 
-import AgeCheckContract from '../abi/AgeCheck.json';
-import { AgeCheck } from '../types/contracts/AgeCheck';
-import { getAgeCheckAddress } from './addressHelpers';
+import OkuCheckContract from '../abi/OkuCheck.json';
+import { OkuCheck } from '../types/contracts/OkuCheck';
+import { getOkuCheckAddress } from './addressHelpers';
 
 export const getRpcUrlByChainId = (chainId: number): string => {
   const networkRpc = networkConfig[toHex(chainId).toString()].rpcUrls[0];
@@ -20,11 +20,11 @@ const getContract = (abi: any, address: string, chainId: number) => {
   return new ethers.Contract(address, abi, signerOrProvider);
 };
 
-export const getAgeCheckContract = (chainId: number) => {
+export const getOkuCheckContract = (chainId: number) => {
   try {
-    const contractAddr = getAgeCheckAddress(chainId);
+    const contractAddr = getOkuCheckAddress(chainId);
 
-    return getContract(AgeCheckContract.abi, contractAddr, chainId) as AgeCheck;
+    return getContract(OkuCheckContract.abi, contractAddr, chainId) as OkuCheck;
   } catch (e) {
     console.log(`Error getting contract for the chainId ${chainId}`);
   }

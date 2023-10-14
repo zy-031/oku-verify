@@ -10,7 +10,7 @@ import { resolve } from "path"
 import "solidity-coverage"
 import { config } from "./package.json"
 import KEYS from "./private.json"
-import "./tasks/deploy-age-check"
+import "./tasks/deploy-oku-check"
 // dotenvConfig({ path: resolve(__dirname, "./.env") })
 
 function getNetworks(): NetworksUserConfig | undefined {

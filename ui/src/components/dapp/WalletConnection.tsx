@@ -18,7 +18,7 @@ import { truncateAddress } from '@utils/wallet';
 
 import { useWalletContext } from './WalletContext';
 
-const supportedChains = Object.keys(contractAddresses.ageCheck ?? {});
+const supportedChains = Object.keys(contractAddresses.okuCheck ?? {});
 
 const BootstrapInput = styled(TextField)(({ theme }) => ({
   '& .MuiInputBase-input': {

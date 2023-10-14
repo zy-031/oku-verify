@@ -9,7 +9,7 @@ import { Meta } from '@layout/Meta';
 import { Main } from '@templates/Main';
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import('../components/dapp/AgeCheck'),
+  () => import('../components/dapp/OkuCheck'),
   {
     ssr: false,
   },

@@ -1,11 +1,11 @@
 import { expect } from "chai"
 import { Signer } from "ethers"
 import { ethers } from "hardhat"
-import { AgeCheck } from "../build/typechain/AgeCheck"
+import { OkuCheck } from "../build/typechain/OkuCheck"
 import { groth16 } from "snarkjs"
 
-describe("AgeCheck", () => {
-  let ageCheckContract: AgeCheck
+describe("OkuCheck", () => {
+  let okuCheckContract: OkuCheck
   let accounts: Signer[]
 
   before(async () => {
@@ -15,19 +15,19 @@ describe("AgeCheck", () => {
     const verifierDeployed = await verifierContract.deploy()
     console.log("verifierContract", verifierDeployed.address)
 
-    const ageCheck = await ethers.getContractFactory("AgeCheck")
-    ageCheckContract = await ageCheck.deploy(verifierDeployed.address)
-    console.log("ageCheckContract", ageCheckContract.address)
+    const okuCheck = await ethers.getContractFactory("OkuCheck")
+    okuCheckContract = await okuCheck.deploy(verifierDeployed.address)
+    console.log("okuCheckContract", okuCheckContract.address)
   })
 
-  it("Should verify if age is above 18", async () => {
+  it("Should verify if oku is above 18", async () => {
     const wasmFilePath = "./build/snark/circuit.wasm"
     const finalZkeyPath = "./build/snark/circuit_final.zkey"
-    const age = 21
-    const ageLimit = BigInt(18)
+    const oku = 21
+    const okuLimit = BigInt(18)
     const witness = {
-      age,
-      ageLimit
+      oku,
+      okuLimit
     }
 
     const { proof, publicSignals } = await groth16.fullProve(witness, wasmFilePath, finalZkeyPath, null)
@@ -44,12 +44,12 @@ describe("AgeCheck", () => {
       proof.pi_c[1]
     ]
 
-    const transaction = ageCheckContract.connect(accounts[0]).verifyAge(solidityProof, publicSignals)
+    const transaction = okuCheckContract.connect(accounts[0]).verifyoku(solidityProof, publicSignals)
     console.log("transaction", transaction)
-    //    await expect(transaction).to.be.revertedWith("Below Age limit")
+    //    await expect(transaction).to.be.revertedWith("Below oku limit")
 
     await expect(transaction)
-      .to.emit(ageCheckContract, "AgeVerfied")
+      .to.emit(okuCheckContract, "OkuVerfied")
       .withArgs(await accounts[0].getAddress(), true)
   })
 })
