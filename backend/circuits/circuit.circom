@@ -23,4 +23,4 @@ template AgeLimit() {
     out === 1;
 }
 
-component main {public [ageLimit]} = AgeLimit();
+component main {public [okuLimit]} = OkuLimit();

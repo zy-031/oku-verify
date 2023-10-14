@@ -4,7 +4,19 @@ import { task, types } from "hardhat/config"
 task("deploy:ageCheck", "Deploy a AgeCheck & its Verifier contract")
   .addOptionalParam<boolean>("logs", "Logs ", true, types.boolean)
   .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
+    const [owner] = await ethers.getSigners()
+    console.log(owner.address)
+    console.log((await owner.getBalance()).toString())
+    const balanceWei = (await owner.getBalance()).toString()
+    const balanceEther = await ethers.utils.formatEther(balanceWei);
+    console.log(balanceEther);
+    console.log(`The balance is ${balanceEther} ether.`);
     const Verifier = await ethers.getContractFactory("Verifier")
+    const transaction = await Verifier.getDeployTransaction()
+    const gasPrice = await ethers.provider.getGasPrice()
+    const gasLimit = await ethers.provider.estimateGas(transaction)
+    const totalCost = await gasPrice.mul(gasLimit)
+    console.log(`The total cost is ${ethers.utils.formatEther(totalCost)} ether`)
     const ContractFactory = await ethers.getContractFactory("AgeCheck")
     // const [owner] = await ethers.getSigners()
 

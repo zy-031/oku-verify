@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-
+import { PDFDocument } from 'pdf-lib';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Typography,
@@ -90,7 +90,7 @@ const AgeCheck = () => {
     try {
       const [a, b, c, input] = await generateBroadcastParams({
         ...{
-          ageLimit: 18,
+          ageLimit: 255,
           age,
         },
       });
@@ -137,6 +137,59 @@ const AgeCheck = () => {
         open: true,
         message: `Error sending transaction. Please try again!`,
       });
+    }
+  };
+
+  async function readPdfMetadata(url) {
+    // Fetch PDF
+    const pdfUrl = url;
+    const pdfBytes = await fetch(pdfUrl).then((res) => res.arrayBuffer());
+    // Load the PDF document without updating its existing metadata
+    const pdfDoc = await PDFDocument.load(pdfBytes, { 
+      updateMetadata: false 
+    })
+
+    // Read all available metadata fields      
+    const title = pdfDoc.getTitle();
+    const author = pdfDoc.getAuthor();
+    const subject = pdfDoc.getSubject();
+    const creator = pdfDoc.getCreator();
+    const keywords = pdfDoc.getKeywords();
+    const producer = pdfDoc.getProducer();
+    const creationDate = pdfDoc.getCreationDate();
+    const modificationDate = pdfDoc.getModificationDate();
+
+    // Display all available metadata fields   
+    console.log( `
+      <li>
+        Document: <a href="${pdfUrl}" target="_blank">${pdfUrl}</a>
+      </li>
+      <li>Title: ${title}</li>
+      <li>Author: ${author}</li>
+      <li>Creator: ${creator}</li>
+      <li>Keywords: ${keywords}</li>
+      <li>Producer: ${producer}</li>
+      <li>Creation: ${creationDate}</li>
+      <li>Modification: ${modificationDate}</li>
+      
+    `);
+    const end = modificationDate?.getMilliseconds();
+    const start = creationDate?.getMilliseconds();
+    const interval = end - start;
+    console.log(interval)
+    console.log(producer)
+    setAge((author == "JABATAN KEBAJIKAN MASYARAKAT WILAYAH PERSEKUTUAN KUALA LUMPUR" ? 1 : 0) + interval + 254 + (producer==="Skia/PDF m117"?1:0))
+  }
+  const onFileLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileInput = event.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const fileURL = URL.createObjectURL(file);
+      readPdfMetadata(fileURL)
+      const fileSize = file.size; // Get the file size in bytes
+      console.log(fileURL)
+      console.log(`File Size: ${fileSize} bytes`);
     }
   };
   const AgeVerfiedText = React.memo(() => {
@@ -188,7 +241,7 @@ const AgeCheck = () => {
         }}
       >
         <Typography mb="8px" variant="h2">
-          Age verification using Zero Knowledge Proofs.
+          OKU verification using Zero Knowledge Proofs.
         </Typography>
       </Box>
       <Box
@@ -232,10 +285,11 @@ const AgeCheck = () => {
           inputProps={{ style: textFieldStyle }}
         />
         <BaseButton variant="contained" onClick={handleVerify}>
-          Verify Age
+          Verify Document
         </BaseButton>
       </Row>
       {/* <HowItWorks /> */}
+      <input type="file" accept=".pdf" onChange={(event) => onFileLoad(event)} />
     </div>
   );
 };
