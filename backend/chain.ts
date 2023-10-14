@@ -141,9 +141,8 @@ export const chainConfig = {
       title: "Polygon Testnet Mumbai",
       chain: "Polygon",
       rpc: [
-        "https://matic-mumbai.chainstacklabs.com",
-        "https://rpc-mumbai.maticvigil.com",
-        "https://matic-testnet-archive-rpc.bwarelabs.com"
+        'https://rpc-mumbai.maticvigil.com/',
+        'https://matic-testnet-archive-rpcUrls.bwarelabs.com',
       ],
       faucets: ["https://faucet.polygon.technology/"],
       nativeCurrency: {

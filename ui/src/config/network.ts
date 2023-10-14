@@ -144,8 +144,7 @@ export const networkConfig: Record<string, any> = {
     title: 'Polygon Testnet Mumbai',
     chainName: 'Polygon',
     rpcUrls: [
-      'https://matic-mumbai.chainstacklabs.com',
-      'https://rpcUrls-mumbai.maticvigil.com',
+      'https://rpc-mumbai.maticvigil.com/',
       'https://matic-testnet-archive-rpcUrls.bwarelabs.com',
     ],
     faucets: ['https://faucet.polygon.technology/'],
